@@ -1,0 +1,27 @@
+{
+  "name": "TeraBot",
+  "version": "1.0.2",
+  "description": "Bot discord pour le serveur TeraCube",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "Zips Tuto/Gaming",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.2.1",
+    "nodejs": "0.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zfbTony/Discord-Bot-Template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zfbTony/Discord-Bot-Template/issues"
+  },
+  "homepage": "https://github.com/zfbTony/Discord-Bot-Template#readme"
+}
