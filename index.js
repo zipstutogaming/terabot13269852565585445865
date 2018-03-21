@@ -44,7 +44,7 @@ bot.on("message", async message => {
             return message.channel.send({
   "content": "Voici la liste des commandes:",
   "embed": {
-    "title": "-----------------------------",
+    "title": "Liste des commandes",
     "url": "",
     "color": 8311585,
     "footer": {
@@ -58,7 +58,7 @@ bot.on("message", async message => {
       "url": ""
     },
     "author": {
-      "name": "Liste des commandes",
+      "name": "",
       "url": "",
       "icon_url": ""
     },
@@ -96,7 +96,7 @@ bot.on("message", async message => {
                 return message.channel.send({
   "content": "Voici les informations du bot:",
   "embed": {
-    "title": "-----------------------------",
+    "title": "Informations sur le bot",
     "url": "",
     "color": 8311585,
     "footer": {
@@ -110,7 +110,7 @@ bot.on("message", async message => {
       "url": ""
     },
     "author": {
-      "name": "Informations sur bot",
+      "name": "",
       "url": "",
       "icon_url": ""
     },
