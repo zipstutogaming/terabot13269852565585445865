@@ -1,5 +1,5 @@
 {
-    "token": TOKEN,
-    "owner": OWNER,
+    "token": process.enc.TOKEN,
+    "owner": "5",
     "prefix": "?"
 }
