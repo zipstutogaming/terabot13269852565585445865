@@ -1,5 +1,5 @@
 {
-    "token": process.env.TOKEN,
-    "owner": process.env.OWNER,
+    "token": TOKEN,
+    "owner": OWNER,
     "prefix": "?"
 }
