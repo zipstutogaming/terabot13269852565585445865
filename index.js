@@ -22,7 +22,7 @@ bot.on("message", (message) => {
     
     if(message.channel.type === 'dm') { // Direct Message
         return; //Optionally handle direct messages
-    } 
+    }
 
     console.log(message.content); // Log chat to console for debugging/testing
     
@@ -158,12 +158,11 @@ bot.on("message", (message) => {
    
    if (cmd == 'chat') {
 		try {
-			get('https://random.cat/meow').then(response => {
-				embed.setImage(response.body.file);
-				message.channel.send({embed});
+			get('https://aws.random.cat/meow').then(response => {
+				message.channel.send({files: [{attachment: response.body.file, name: `cat.${response.body.file.split('.')[2]}`}]});
 			});
-		} catch (error) {
-			return message.channel.send(error.stack);
+		} catch (e) {
+			return message.channel.send(e.stack);
 		}
 	};
 
