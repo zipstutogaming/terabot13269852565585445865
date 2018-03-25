@@ -1,5 +1,6 @@
 const config = require('./config.json');
 const Discord = require('discord.js');
+const superagent = require("superagent");
 const util = require('util');
 const bot = new Discord.Client({
     disableEveryone: true,
@@ -7,7 +8,7 @@ const bot = new Discord.Client({
 });
 
 bot.on("ready", () => {
-    bot.user.setGame('TeraCube | ?help'); //you can set a default game
+    bot.user.setActivity('TeraCube | ?help'); //you can set a default game
     console.log(`Bot en ligne!\n${bot.users.size} utilisateurs, dans ${bot.guilds.size} serveurs connectés.`);
 });
 
@@ -15,16 +16,13 @@ bot.on("guildCreate", guild => {
     console.log(`I've joined the guild ${guild.name} (${guild.id}), owned by ${guild.owner.user.username} (${guild.owner.user.id}).`);
 });
 
-bot.on("message", async message => { 
-
-	var originalMessage = messahe.content.substring(PREFIX.length)
-	let annonceChannel = client.channels.find("name", "annonce")
+bot.on("message", (message) => { 
 
     if(message.author.bot || message.system) return; // Ignore bots
     
     if(message.channel.type === 'dm') { // Direct Message
         return; //Optionally handle direct messages
-    } 
+	}
 
     console.log(message.content); // Log chat to console for debugging/testing
     
@@ -84,8 +82,32 @@ bot.on("message", async message => {
       }
     ]
   }
+  
 });
-        }
+
+	 if (cmd === "cat") {
+	   const { body } = await superagent
+	   .get('http://random.cat/meow');
+	   const embed = new Discord.RichEmbed()
+	   .setColor(0x954D23)
+	   .setTitle("Meow :cat:")
+	   .setImage(body.file)
+	   message.channel.send({embed})
+   }
+
+  else if (cmd === "announcement") {
+	   if (message.member.hasPermission("ADMINISTRATOR")) {
+		   const text = args.join(" ")
+		   if (text.length < 1) return message.channel.send("Can not announce nothing");
+		   //const colour = args.slice(2).join("");
+		   const embed = new Discord.RichEmbed()
+		   .setColor(0x954D23)
+		   .setTitle("Important Announcement:")
+		   .setDescription(text);
+		   message.channel.send("@everyone")
+		   message.channel.send({embed})
+	 }
+   	}
 
         else if (cmd === "say") {
             message.channel.send(args.join(" "))
@@ -136,12 +158,10 @@ bot.on("message", async message => {
       }
     ]
   }
+  	
 });     
 	   }
 
-		else if (args.substring(0,3) == ann) {
-			annonceCommand(message, originalMessage.substring(3), adminRole, annonceChannel, PREFIX)
-		}
         // Make sure this command always checks for you. YOU NEVER WANT ANYONE ELSE TO USE THIS COMMAND
         else if (cmd === "eval" && message.author.id === config.owner){ // < checks the message author's id to yours in config.json.
             const code = args.join(" ");
@@ -159,28 +179,6 @@ bot.on("message", async message => {
     }
     return;
 });
-
-function annonceCommand(message, args, adminRole, annonceChannel, prefix) {
-	if(args == "") {
-		message.channel.send(':x: Erreur de syntaxe. **Utilise** ?annonce <message>')
-		return
-	}
-	if (annonceChannel == null) {
-		message.channel.send(':x: Le channel **Annonce** est introuvable.')
-		return
-	}
-	const annEmbed = new Discord.RichEmbed()
-		.setColor()
-		.setTimestamp()
-		.addFiled('Annonce', '${args}')
-	
-	if(message.member.roles.has(adminRole.id)) {
-		annonceChannel.send(annEmbed)
-		annonceChannel.send('@everyone')
-	} else {
-		message.channel.send(":x: Vous n'avez pas la permission d'utiliser cette commande.")
-	}
-}
 
 function evalCmd(message, code) {
     if(message.author.id !== config.owner) return;
@@ -217,3 +215,4 @@ process.on('unhandledRejection', err => {
 });
 
 bot.login(config.token);
+    
