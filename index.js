@@ -1,7 +1,7 @@
 const config = require('./config.json');
 const Discord = require('discord.js');
-const superagent = require("superagent");
 const util = require('util');
+const {get} = require("snekfetch"); 
 const bot = new Discord.Client({
     disableEveryone: true,
     disabledEvents: ['TYPING_START']
@@ -22,7 +22,7 @@ bot.on("message", (message) => {
     
     if(message.channel.type === 'dm') { // Direct Message
         return; //Optionally handle direct messages
-	}
+    } 
 
     console.log(message.content); // Log chat to console for debugging/testing
     
@@ -82,32 +82,8 @@ bot.on("message", (message) => {
       }
     ]
   }
-  
 });
-
-	 if (cmd === "cat") {
-	   const { body } = await superagent
-	   .get('http://random.cat/meow');
-	   const embed = new Discord.RichEmbed()
-	   .setColor(0x954D23)
-	   .setTitle("Meow :cat:")
-	   .setImage(body.file)
-	   message.channel.send({embed})
-   }
-
-  else if (cmd === "announcement") {
-	   if (message.member.hasPermission("ADMINISTRATOR")) {
-		   const text = args.join(" ")
-		   if (text.length < 1) return message.channel.send("Can not announce nothing");
-		   //const colour = args.slice(2).join("");
-		   const embed = new Discord.RichEmbed()
-		   .setColor(0x954D23)
-		   .setTitle("Important Announcement:")
-		   .setDescription(text);
-		   message.channel.send("@everyone")
-		   message.channel.send({embed})
-	 }
-   	}
+        }
 
         else if (cmd === "say") {
             message.channel.send(args.join(" "))
@@ -158,20 +134,44 @@ bot.on("message", (message) => {
       }
     ]
   }
-  	
 });     
-	   }
+        }
 
         // Make sure this command always checks for you. YOU NEVER WANT ANYONE ELSE TO USE THIS COMMAND
         else if (cmd === "eval" && message.author.id === config.owner){ // < checks the message author's id to yours in config.json.
             const code = args.join(" ");
             return evalCmd(message, code);
         }
+        
+       else if (cmd === "ann") {
+	   if (message.member.hasPermission("ADMINISTRATOR")) {
+		   const text = args.join(" ")
+		   if (text.length < 1) return message.channel.send(":x: Ce message est vide.");
+		   //const colour = args.slice(2).join("");
+		   const embed = new Discord.RichEmbed()
+		   .setColor(0x954D23)
+		   .setTitle("Annonce:")
+		   .setDescription(text);
+		   message.channel.send("@everyone", {embed})
+	   }
+   }
+   
+   if (cmd == 'chat') {
+		try {
+			get('https://random.cat/meow').then(response => {
+				embed.setImage(response.body.file);
+				message.channel.send({embed});
+			});
+		} catch (error) {
+			return message.channel.send(error.stack);
+		}
+	};
 
-        else { // if the command doesn't match anything you can say something or just ignore it
+
+      /*  else { // if the command doesn't match anything you can say something or just ignore it
             message.channel.send(`Commande inconnue.`);
             return;
-        }
+        } */
         
     } else if (message.content.indexOf("<@"+bot.user.id) === 0 || message.content.indexOf("<@!"+bot.user.id) === 0) { // Catch @Mentions
 
