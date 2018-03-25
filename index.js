@@ -8,7 +8,7 @@ const bot = new Discord.Client({
 });
 
 bot.on("ready", () => {
-    bot.user.setActivity('TeraCube | ?help'); //you can set a default game
+    bot.user.setGame('TeraCube | ?help'); //you can set a default game
     console.log(`Bot en ligne!\n${bot.users.size} utilisateurs, dans ${bot.guilds.size} serveurs connectés.`);
 });
 
