@@ -157,7 +157,7 @@ bot.on("message", (message) => {
 	   }
    }
    
-   if (cmd == 'embed-cat')) {
+   if (cmd == 'chat') {
 		try {
 			get('https://random.cat/meow').then(response => {
 				embed.setImage(response.body.file);
