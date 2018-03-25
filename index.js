@@ -1,6 +1,7 @@
 const config = require('./config.json');
 const Discord = require('discord.js');
 const util = require('util');
+const embed = new Discord.RichEmbed();
 const {get} = require("snekfetch"); 
 const bot = new Discord.Client({
     disableEveryone: true,
@@ -156,16 +157,16 @@ bot.on("message", (message) => {
 	   }
    }
    
-   if (cmd == 'chat') {
+   if (cmd == 'embed-cat')) {
 		try {
-			get('https://aws.random.cat/meow').then(response => {
-				message.channel.send({files: [{attachment: response.body.file, name: `cat.${response.body.file.split('.')[2]}`}]});
+			get('https://random.cat/meow').then(response => {
+				embed.setImage(response.body.file);
+				message.channel.send({embed});
 			});
-		} catch (e) {
-			return message.channel.send(e.stack);
+		} catch (error) {
+			return message.channel.send(error.stack);
 		}
 	};
-
 
       /*  else { // if the command doesn't match anything you can say something or just ignore it
             message.channel.send(`Commande inconnue.`);
@@ -214,4 +215,5 @@ process.on('unhandledRejection', err => {
 });
 
 bot.login(config.token);
+    
     
