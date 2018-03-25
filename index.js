@@ -17,6 +17,9 @@ bot.on("guildCreate", guild => {
 
 bot.on("message", async message => { 
 
+	var originalMessage = messahe.content.substring(PREFIX.length)
+	let annonceChannel = client.channels.find("name", "annonce")
+
     if(message.author.bot || message.system) return; // Ignore bots
     
     if(message.channel.type === 'dm') { // Direct Message
@@ -134,8 +137,11 @@ bot.on("message", async message => {
     ]
   }
 });     
-        }
+	   }
 
+		else if (args.substring(0,3) == ann) {
+			annonceCommand(message, originalMessage.substring(3), adminRole, annonceChannel, PREFIX)
+		}
         // Make sure this command always checks for you. YOU NEVER WANT ANYONE ELSE TO USE THIS COMMAND
         else if (cmd === "eval" && message.author.id === config.owner){ // < checks the message author's id to yours in config.json.
             const code = args.join(" ");
@@ -153,6 +159,28 @@ bot.on("message", async message => {
     }
     return;
 });
+
+function annonceCommand(message, args, adminRole, annonceChannel, prefix) {
+	if(args == "") {
+		message.channel.send(':x: Erreur de syntaxe. **Utilise** ?annonce <message>')
+		return
+	}
+	if (annonceChannel == null) {
+		message.channel.send(':x: Le channel **Annonce** est introuvable.')
+		return
+	}
+	const annEmbed = new Discord.RichEmbed()
+		.setColor()
+		.setTimestamp()
+		.addFiled('Annonce', '${args}')
+	
+	if(message.member.roles.has(adminRole.id)) {
+		annonceChannel.send(annEmbed)
+		annonceChannel.send('@everyone')
+	} else {
+		message.channel.send(":x: Vous n'avez pas la permission d'utiliser cette commande.")
+	}
+}
 
 function evalCmd(message, code) {
     if(message.author.id !== config.owner) return;
